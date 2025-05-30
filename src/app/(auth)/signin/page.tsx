@@ -119,7 +119,7 @@ const SignIn = () => {
         <div className="text-center text-sm">
           Don&apos;t have an account?
           <Link
-            href={"#"}
+            href={"/signup"}
             className="text-blue-500 hover:text-blue-700 font-medium"
           >
             Sign up
