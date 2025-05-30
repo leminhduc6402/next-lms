@@ -7,9 +7,9 @@ import {
   ShoppingCart,
 } from "lucide-react";
 import Link from "next/link";
-import { DarkModeToggle } from "../DarkModeToggle";
-import NavLink from "../NavLink";
-import UserProfile from "../UserProfile";
+import { DarkModeToggle } from "./DarkkModeToggle";
+import NavLink from "./NavLink";
+import UserProfile from "./UserProfile";
 
 const Navbar = () => {
   return (

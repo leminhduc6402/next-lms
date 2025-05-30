@@ -1,21 +1,21 @@
 "use client";
 import React from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { Button } from "../ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Button } from "./ui/button";
 import { DropdownMenu } from "@radix-ui/react-dropdown-menu";
 import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
+} from "./ui/dropdown-menu";
 import Link from "next/link";
 
 const UserProfile = () => {
   const [user] = React.useState();
   return (
     <div>
-      {!user ? (
+      {user ? (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Avatar className="cursor-pointer">
@@ -62,9 +62,9 @@ const UserProfile = () => {
         </DropdownMenu>
       ) : (
         <>
-          <Button variant={"outline"} className="flex items-center">
+          <Link href="/signin" className="">
             Login
-          </Button>
+          </Link>
         </>
       )}
     </div>
