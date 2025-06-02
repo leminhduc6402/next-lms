@@ -24,7 +24,7 @@ const HeroSection = () => {
         </Button>
       </div>
       <div className="relative w-full h-[400px] overflow-hidden">
-        <Globe />
+        <Globe className="max-w-[400px]" />
         <div className="absolute bg-white top-[20%] left-[15%] p-2 rounded shadow-lg animate-float-1">
           Clean Code
         </div>

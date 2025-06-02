@@ -9,7 +9,15 @@ export default function Home() {
         <div>
           <h2 className="text-2xl font-bold mb-4">Khóa học nổi bật</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            <CourseCard />
+
+            <CourseCard
+              image="https://files.fullstack.edu.vn/f8-prod/courses/2.png"
+              title="HTML, CSS, cơ bản"
+              price="$49.99"
+              studentsCount={320}
+              duration="8h 30m"
+            />
+
           </div>
         </div>
       </section>
