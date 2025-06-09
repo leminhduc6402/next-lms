@@ -6,14 +6,25 @@ import { Label } from "@/components/ui/label";
 import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
+import { signIn } from "next-auth/react";
 
 const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("Admin@123");
+  const [email, setEmail] = useState("leminhduc6402@gmail.com");
+
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log("Check email, password: ", email + " " + password);
+    await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    });
+  };
   return (
     <div className="min-h-screen flex items-center justify-center">
-      <div className="rounded-2xl shadow-lg p-8 space-y-6 dark:bg-slate-700">
+      <div className="rounded-2xl w-full max-w-md shadow-lg p-8 space-y-6 dark:bg-slate-700">
         <div className="text-center space-y-2">
           <h1 className="text-3xl font-bold tracking-tighter">Welcome</h1>
           <p className="text-muted-foreground">
@@ -21,7 +32,7 @@ const SignIn = () => {
           </p>
         </div>
 
-        <form className="space-y-4 ">
+        <form className="space-y-4" onSubmit={onSubmit}>
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <Input
@@ -45,6 +56,7 @@ const SignIn = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
               <Button
+                type="button"
                 variant={"ghost"}
                 size={"icon"}
                 onClick={() => setShowPassword(!showPassword)}
@@ -81,7 +93,7 @@ const SignIn = () => {
           </div>
         </div>
         <div className="grid grid-cols-2 gap-4">
-          <Button variant="outline" className="w-full">
+          <Button type="button" variant="outline" className="w-full">
             <svg
               role="img"
               viewBox="0 0 24 24"
@@ -98,7 +110,7 @@ const SignIn = () => {
             </svg>
             Facebook
           </Button>
-          <Button variant="outline" className="w-full">
+          <Button type="button" variant="outline" className="w-full">
             <svg
               role="img"
               viewBox="0 0 24 24"

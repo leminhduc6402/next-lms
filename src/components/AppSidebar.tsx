@@ -1,5 +1,5 @@
 "use client";
-import { Home, LibraryBig, Users } from "lucide-react";
+import { LayoutDashboard, LibraryBig, Users } from "lucide-react";
 
 import {
   Sidebar,
@@ -16,9 +16,9 @@ import { usePathname } from "next/navigation";
 // Menu items.
 const items = [
   {
-    title: "Home",
+    title: "Dashboard",
     url: "/dashboard",
-    icon: Home,
+    icon: LayoutDashboard,
   },
   {
     title: "Courses",
