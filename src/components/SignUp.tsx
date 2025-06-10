@@ -51,9 +51,14 @@ const SignUp = () => {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel htmlFor="name">Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Nguyen Van A" {...field} />
+                    <Input
+                      id="name"
+                      autoComplete="name"
+                      placeholder="Nguyen Van A"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -66,9 +71,11 @@ const SignUp = () => {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel htmlFor="email">Email</FormLabel>
                   <FormControl>
                     <Input
+                      id="email"
+                      autoComplete="email"
                       placeholder="Example@gmail.com"
                       formNoValidate
                       type="email"
@@ -86,10 +93,11 @@ const SignUp = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel htmlFor="password">Password</FormLabel>
                   <FormControl>
                     <div className="relative">
                       <Input
+                        id="password"
                         placeholder="*********"
                         type={showPassword ? "text" : "password"}
                         {...field}

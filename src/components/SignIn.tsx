@@ -17,6 +17,7 @@ import {
 } from "./ui/form";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
+import { signIn } from "next-auth/react";
 
 const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -28,8 +29,9 @@ const SignIn = () => {
     },
   });
 
-  function onSubmit(values: SignInBodyType) {
-    console.log(values);
+  async function onSubmit(values: SignInBodyType) {
+    console.log(">> Check submit value signin: ", values);
+    await signIn("credentials", values);
   }
   return (
     <div className="rounded-2xl w-full max-w-md shadow-lg p-8 space-y-6 dark:bg-slate-700">
@@ -40,16 +42,22 @@ const SignIn = () => {
         </p>
       </div>
       <Form {...form}>
-        <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
+        <form
+          className="space-y-4"
+          noValidate
+          onSubmit={form.handleSubmit(onSubmit)}
+        >
           <div className="space-y-2">
             <FormField
               control={form.control}
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel htmlFor="email">Email</FormLabel>
                   <FormControl>
                     <Input
+                      autoComplete="email"
+                      id="email"
                       placeholder="Example@gmail.com"
                       formNoValidate
                       type="email"
@@ -67,10 +75,12 @@ const SignIn = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel htmlFor="password">Password</FormLabel>
                   <FormControl>
                     <div className="relative">
                       <Input
+                        autoComplete="new-password"
+                        id="password"
                         placeholder="*********"
                         type={showPassword ? "text" : "password"}
                         {...field}
@@ -93,7 +103,7 @@ const SignIn = () => {
           </div>
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <Checkbox id="remember" />
+              <Checkbox id="remember" name="remember" />
               <Label htmlFor="remember">Remember me</Label>
             </div>
             <Link

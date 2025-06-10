@@ -16,6 +16,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           name: "Le Minh Duc",
           email: "leminhduc6402@gmail.com",
         };
+        console.log("Check authorize: ", credentials);
         if (!user) {
           // No user found, so this is their first attempt to login
           // Optionally, this is also the place you could do a user registration
