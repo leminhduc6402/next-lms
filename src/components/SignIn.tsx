@@ -17,7 +17,7 @@ import {
 } from "./ui/form";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
-import { signIn } from "next-auth/react";
+import { authenticate } from "@/lib/action";
 
 const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -30,8 +30,10 @@ const SignIn = () => {
   });
 
   async function onSubmit(values: SignInBodyType) {
-    console.log(">> Check submit value signin: ", values);
-    await signIn("credentials", values);
+    const { email, password } = values;
+    // await signIn("credentials", values);
+    const result = await authenticate(email, password);
+    console.log("check", result);
   }
   return (
     <div className="rounded-2xl w-full max-w-md shadow-lg p-8 space-y-6 dark:bg-slate-700">

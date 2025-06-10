@@ -12,10 +12,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: {},
       },
       authorize: async (credentials) => {
-        const user = {
-          name: "Le Minh Duc",
-          email: "leminhduc6402@gmail.com",
-        };
+        const user = null;
+        //  {
+        //   name: "Le Minh Duc",
+        //   email: "leminhduc6402@gmail.com",
+        // };
         console.log("Check authorize: ", credentials);
         if (!user) {
           // No user found, so this is their first attempt to login
