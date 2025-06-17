@@ -18,8 +18,11 @@ import {
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { authenticate } from "@/lib/action";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const SignIn = () => {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const form = useForm<SignInBodyType>({
     resolver: zodResolver(SignInBody),
@@ -28,12 +31,18 @@ const SignIn = () => {
       password: "Admin@123",
     },
   });
-
   async function onSubmit(values: SignInBodyType) {
     const { email, password } = values;
     // await signIn("credentials", values);
-    const result = await authenticate(email, password);
-    console.log("check", result);
+    const res = await authenticate(email, password);
+    if (res?.error) {
+      toast.error(res.error);
+      if (res.code === 2) {
+        router.push("/verify");
+      }
+    } else {
+      window.location.href = "/dashboard";
+    }
   }
   return (
     <div className="rounded-2xl w-full max-w-md shadow-lg p-8 space-y-6 dark:bg-slate-700">

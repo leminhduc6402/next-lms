@@ -1,5 +1,11 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+import { sendRequest } from "./lib/api";
+import {
+  AccountNotVerifiedError,
+  InvalidEmailPasswordError,
+} from "./lib/errors";
+import { IUser } from "./types/next-auth";
 // Your own logic for dealing with plaintext password strings; be careful!
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -12,24 +18,44 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: {},
       },
       authorize: async (credentials) => {
-        const user = null;
-        //  {
-        //   name: "Le Minh Duc",
-        //   email: "leminhduc6402@gmail.com",
-        // };
-        console.log("Check authorize: ", credentials);
-        if (!user) {
-          // No user found, so this is their first attempt to login
-          // Optionally, this is also the place you could do a user registration
-          throw new Error("Invalid credentials.");
+        const res = await sendRequest<IBackendRes<ISignin>>({
+          url: "http://localhost:8000/api/v1/auth/login",
+          method: "POST",
+          body: {
+            email: credentials?.email,
+            password: credentials?.password,
+          },
+        });
+        if (res.statusCode === 201) {
+          return {
+            _id: res.data?.user?._id,
+            name: res.data?.user?.name,
+            email: res.data?.user?.email,
+            access_token: res.data?.access_token,
+          };
+        } else if (res.statusCode === 401) {
+          throw new InvalidEmailPasswordError();
+        } else if (res.statusCode === 400) {
+          throw new AccountNotVerifiedError();
+        } else {
+          throw new Error("Internal server error");
         }
-
-        // return user object with their profile data
-        return user;
       },
     }),
   ],
   pages: {
     signIn: "/signin",
+  },
+  callbacks: {
+    jwt({ token, user }) {
+      if (user) {
+        token.user = user as IUser;
+      }
+      return token;
+    },
+    session({ session, token }) {
+      (session.user as IUser) = token.user;
+      return session;
+    },
   },
 });
