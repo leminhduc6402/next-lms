@@ -1,9 +1,7 @@
 import { AppSidebar } from "@/components/AppSidebar";
-import { DarkModeToggle } from "@/components/DarkkModeToggle";
 import Footer from "@/components/Footer";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import UserProfile from "@/components/UserProfile";
-import { ShoppingCart } from "lucide-react";
+import Navbar from "@/components/Navbar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 
 export default function RootLayout({
   children,
@@ -12,21 +10,16 @@ export default function RootLayout({
 }>) {
   return (
     <SidebarProvider>
-      <AppSidebar />
-      <main className="flex flex-col h-screen w-full bg-gray-100 dark:bg-slate-800">
-        <div className="flex items-center justify-between bg-white px-4 py-3 shadow-sm dark:bg-slate-700">
-          <SidebarTrigger />
-          <div className="flex items-center gap-4">
-            <DarkModeToggle />
-            <button>
-              <ShoppingCart />
-            </button>
-            <UserProfile />
-          </div>
+      <div className="flex h-screen w-full">
+        <AppSidebar />
+        <div className="flex flex-col flex-1">
+          <Navbar isDashboard isEnabledSidebarTrigger />
+          <main className="flex-1 p-4 bg-gray-100 dark:bg-slate-800 overflow-y-auto">
+            {children}
+          </main>
+          <Footer />
         </div>
-        <div className="w-full h-[100%] p-4 flex flex-col">{children}</div>
-        <Footer />
-      </main>
+      </div>
     </SidebarProvider>
   );
 }

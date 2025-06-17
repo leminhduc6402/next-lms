@@ -7,7 +7,7 @@ const Home = () => {
   return (
     <>
       <AppBreadcrumb items={breadcrumbItems} />
-      <div className="rounded-lg bg-white shadow w-full h-full p-2 dark:bg-slate-600">
+      <div className="rounded-lg bg-white shadow w-full min-h-[95%] p-2 dark:bg-slate-600">
         Home
       </div>
     </>
