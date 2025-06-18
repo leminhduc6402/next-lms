@@ -11,11 +11,9 @@ import {
 } from "./ui/dropdown-menu";
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
-let UserProfileCounter = 0;
 const UserProfile = () => {
   const { data: session, status } = useSession();
   if (status === "loading") return null;
-  console.log("UserProfile", UserProfileCounter++);
   return (
     <div>
       {status === "authenticated" && session?.user ? (
