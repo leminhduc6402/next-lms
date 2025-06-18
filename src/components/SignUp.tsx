@@ -18,10 +18,6 @@ import {
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
-  // const [password, setPassword] = useState("");
-  // const [email, setEmail] = useState("");
-  // const [name, setName] = useState("");
-
   const form = useForm<SignUpBodyType>({
     resolver: zodResolver(SignUpBody),
     defaultValues: {

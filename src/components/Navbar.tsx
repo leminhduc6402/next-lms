@@ -38,12 +38,10 @@ export const navLinks = [
     icon: <MessageCircleMore className="h-5 w-5" />,
   },
 ];
-let NavbarCounter = 0;
 const Navbar = ({
   isDashboard = false,
   isEnabledSidebarTrigger = false,
 }: NavbarProps) => {
-  console.log("Navbar", NavbarCounter++);
   return (
     <div className="w-full sticky shadow-md dark:bg-slate-700 z-50">
       <div className="flex justify-between items-center px-4 py-3 bg-white dark:bg-slate-700">
