@@ -59,20 +59,7 @@ const Verify = ({ id }: { id: string }) => {
       </div>
       <Form {...form}>
         <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
-          {/* <div className="space-y-2">
-            <FormField
-              control={form.control}
-              name="_id"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input id="_id" type="hidden" formNoValidate {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div> */}
+
           <div className="space-y-2">
             <FormField
               control={form.control}
