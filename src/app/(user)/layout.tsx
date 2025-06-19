@@ -1,14 +1,16 @@
+import { auth } from "@/auth";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth();
   return (
     <>
-      <Navbar />
+      <Navbar session={session} />
       <main>{children}</main>
       <Footer />
     </>

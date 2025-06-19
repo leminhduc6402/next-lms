@@ -15,20 +15,41 @@ import {
   FormLabel,
   FormMessage,
 } from "./ui/form";
+import { sendRequest } from "@/lib/api";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const SignUp = () => {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
+
   const form = useForm<SignUpBodyType>({
     resolver: zodResolver(SignUpBody),
     defaultValues: {
-      email: "",
-      name: "",
-      password: "",
+      email: "ducprotc456@gmail.com",
+      name: "Le Huynh Duc",
+      password: "Admin@123",
     },
   });
 
-  function onSubmit(values: SignUpBodyType) {
-    console.log(values);
+  async function onSubmit(values: SignUpBodyType) {
+    const { email, name, password } = values;
+    const res = await sendRequest<IBackendRes<any>>({
+      method: "POST",
+      url: `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/register`,
+      body: {
+        email,
+        name,
+        password,
+      },
+    });
+    if (res?.data) {
+      router.push("verify/" + res.data._id);
+    } else {
+      toast.error("Something went wrong, please try again later.", {
+        description: res?.message,
+      });
+    }
   }
 
   return (

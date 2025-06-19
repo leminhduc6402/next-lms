@@ -15,6 +15,7 @@ import { SidebarTrigger } from "./ui/sidebar";
 type NavbarProps = {
   isDashboard?: boolean;
   isEnabledSidebarTrigger?: boolean;
+  session: any;
 };
 export const navLinks = [
   {
@@ -41,6 +42,7 @@ export const navLinks = [
 const Navbar = ({
   isDashboard = false,
   isEnabledSidebarTrigger = false,
+  session,
 }: NavbarProps) => {
   return (
     <div className="w-full sticky shadow-md dark:bg-slate-700 z-50">
@@ -74,7 +76,7 @@ const Navbar = ({
           <button>
             <ShoppingCart />
           </button>
-          <UserProfile />
+          <UserProfile session={session} />
         </div>
       </div>
     </div>

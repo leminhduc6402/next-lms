@@ -27,3 +27,12 @@ export const SignUpBody = z
 // });
 
 export type SignUpBodyType = z.TypeOf<typeof SignUpBody>;
+
+export const VerifyBody = z
+  .object({
+    _id: z.string(),
+    code: z.string().trim().nonempty("Please enter the verification code"),
+  })
+  .strict();
+
+export type VerifyBodyType = z.TypeOf<typeof VerifyBody>;

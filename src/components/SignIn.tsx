@@ -20,10 +20,13 @@ import { Label } from "./ui/label";
 import { authenticate } from "@/lib/action";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { ModalReactive } from "./ModalReactive";
 
 const SignIn = () => {
   const router = useRouter();
+  const [email, setEmail] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const form = useForm<SignInBodyType>({
     resolver: zodResolver(SignInBody),
     defaultValues: {
@@ -37,11 +40,15 @@ const SignIn = () => {
     const res = await authenticate(email, password);
     if (res?.error) {
       toast.error(res.error);
+
       if (res.code === 2) {
-        router.push("/verify");
+        setEmail(email);
+        setIsModalOpen(true);
+        return;
       }
     } else {
-      window.location.href = "/dashboard";
+      toast.success("Sign in successfully");
+      router.push("/dashboard");
     }
   }
   return (
@@ -184,6 +191,11 @@ const SignIn = () => {
           Sign up
         </Link>
       </div>
+      <ModalReactive
+        open={isModalOpen}
+        onOpenChange={setIsModalOpen}
+        email={email}
+      />
     </div>
   );
 };
