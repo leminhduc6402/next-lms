@@ -41,7 +41,8 @@ const SignIn = () => {
         router.push("/verify");
       }
     } else {
-      window.location.href = "/dashboard";
+      toast.success("Sign in successfully");
+      router.push("/dashboard");
     }
   }
   return (

@@ -1,5 +1,6 @@
 "use client";
-import React from "react";
+import { signOut } from "next-auth/react";
+import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 import {
@@ -9,14 +10,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import Link from "next/link";
-import { useSession, signOut } from "next-auth/react";
-const UserProfile = () => {
-  const { data: session, status } = useSession();
-  if (status === "loading") return null;
+
+type UserProfileProps = {
+  session: any;
+};
+
+const UserProfile = ({ session }: UserProfileProps) => {
   return (
     <div>
-      {status === "authenticated" && session?.user ? (
+      {session?.user ? (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Avatar className="cursor-pointer">
@@ -63,7 +65,7 @@ const UserProfile = () => {
             <DropdownMenuItem asChild>
               <Button
                 variant={"destructive"}
-                className="w-full"
+                className="w-full cursor-pointer"
                 onClick={() => signOut()}
               >
                 Logout
