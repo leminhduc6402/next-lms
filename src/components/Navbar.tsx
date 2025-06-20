@@ -7,7 +7,7 @@ import {
   ShoppingCart,
 } from "lucide-react";
 import Link from "next/link";
-import { DarkModeToggle } from "./DarkkModeToggle";
+import { DarkModeToggle } from "./DarkModeToggle";
 import NavLink from "./NavLink";
 import UserProfile from "./UserProfile";
 import { SidebarTrigger } from "./ui/sidebar";

@@ -1,10 +1,15 @@
 "use client";
+import { authenticate } from "@/lib/action";
 import { SignInBody, SignInBodyType } from "@/lib/schemaValidation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { ModalReactive } from "./ModalReactive";
+import ModalRenewPassword from "./ModalRenewPassword";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
 import {
@@ -17,16 +22,14 @@ import {
 } from "./ui/form";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
-import { authenticate } from "@/lib/action";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
-import { ModalReactive } from "./ModalReactive";
 
 const SignIn = () => {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalRenewPasswordOpen, setIsModalRenewPasswordOpen] =
+    useState(false);
   const form = useForm<SignInBodyType>({
     resolver: zodResolver(SignInBody),
     defaultValues: {
@@ -36,7 +39,6 @@ const SignIn = () => {
   });
   async function onSubmit(values: SignInBodyType) {
     const { email, password } = values;
-    // await signIn("credentials", values);
     const res = await authenticate(email, password);
     if (res?.error) {
       toast.error(res.error);
@@ -124,12 +126,22 @@ const SignIn = () => {
               <Checkbox id="remember" name="remember" />
               <Label htmlFor="remember">Remember me</Label>
             </div>
-            <Link
+            <div>
+              <Button
+                variant={"link"}
+                className="text-blue-500 hover:text-blue-700"
+                onClick={() => setIsModalRenewPasswordOpen(true)}
+                type="button"
+              >
+                Forgot Password?
+              </Button>
+            </div>
+            {/* <Link
               href={"#"}
               className="text-sm font-medium text-blue-500 hover:text-blue-700"
             >
               Forgot password?
-            </Link>
+            </Link> */}
           </div>
           <Button type="submit" className="w-full">
             Sign In
@@ -195,6 +207,10 @@ const SignIn = () => {
         open={isModalOpen}
         onOpenChange={setIsModalOpen}
         email={email}
+      />
+      <ModalRenewPassword
+        open={isModalRenewPasswordOpen}
+        onOpenChange={setIsModalRenewPasswordOpen}
       />
     </div>
   );
