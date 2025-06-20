@@ -83,7 +83,7 @@ export function ModalReactive(props: ModalReactiveProps) {
   };
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md" aria-modal="false">
+      <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Verify Your Account</DialogTitle>
           <DialogDescription>
