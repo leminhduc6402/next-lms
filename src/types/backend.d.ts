@@ -33,6 +33,8 @@ declare global {
       _id: string;
       name: string;
       email: string;
+      image: string;
+      role: string;
     };
     access_token: string;
   }

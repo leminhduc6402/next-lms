@@ -40,6 +40,7 @@ const SignIn = () => {
   async function onSubmit(values: SignInBodyType) {
     const { email, password } = values;
     const res = await authenticate(email, password);
+
     if (res?.error) {
       toast.error(res.error);
 
