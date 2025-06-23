@@ -31,6 +31,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             _id: res.data?.user?._id,
             name: res.data?.user?.name,
             email: res.data?.user?.email,
+            image: res.data?.user?.image || null,
+            role: res.data?.user?.role,
             access_token: res.data?.access_token,
           };
         } else if (res.statusCode === 401) {
@@ -57,8 +59,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       (session.user as IUser) = token.user;
       return session;
     },
-    authorized: async ({ auth }) => {
-      return !!auth;
-    },
+    // authorized: async ({ auth }) => {
+    //   console.log("Auth callback running with auth:", auth);
+    //   return !!auth;
+    // },
   },
 });
