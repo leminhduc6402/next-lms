@@ -1,38 +1,45 @@
-"use client";
-import { Input } from "@/components/ui/input";
-import { useDebounce } from "@/lib/hooks/useDebounce";
+import { useState, useEffect } from "react";
 import { Search } from "lucide-react";
-import { useEffect, useState } from "react";
+import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
+import { useDebounce } from "@/lib/hooks/useDebounce";
 
-interface SearchInputProps {
-  placeholder?: string;
-  onSearch: (value: string) => void;
+interface SearchInputProps
+  extends Omit<
+    React.InputHTMLAttributes<HTMLInputElement>,
+    "value" | "onChange"
+  > {
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   delay?: number;
-  initialValue?: string;
 }
 
 const SearchInput = ({
   placeholder = "Search...",
-  onSearch,
+  value,
+  onChange,
   delay = 300,
-  initialValue = "",
+  className,
+  ...props
 }: SearchInputProps) => {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState<string>(value);
   const debouncedValue = useDebounce(searchTerm, delay);
 
   useEffect(() => {
-    onSearch(debouncedValue);
+    if (value !== searchTerm) setSearchTerm(value);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value]);
+
+  useEffect(() => {
+    const syntheticEvent = {
+      target: { value: debouncedValue },
+    } as unknown as React.ChangeEvent<HTMLInputElement>;
+    onChange(syntheticEvent);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedValue]);
-  useEffect(() => {
-    if (initialValue !== searchTerm) {
-      setSearchTerm(initialValue);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialValue]);
 
   return (
-    <div className="relative w-full max-w-sm">
+    <div className={cn("relative", className)}>
       <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
         <Search size={16} />
       </span>
@@ -42,6 +49,7 @@ const SearchInput = ({
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         className="pl-9"
+        {...props}
       />
     </div>
   );
