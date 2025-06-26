@@ -35,7 +35,6 @@ export const sendRequest = async <T>(props: IRequest): Promise<T> => {
       message: json?.message ?? "",
       error: json?.error ?? "",
     } as T;
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (err) {
     throw new Error("Network error");
   }

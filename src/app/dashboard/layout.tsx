@@ -14,9 +14,9 @@ export default async function RootLayout({
     <SidebarProvider>
       <div className="flex h-screen w-full">
         <AppSidebar />
-        <div className="flex flex-col flex-1">
+        <div className="w-full h-full">
           <Navbar isDashboard isEnabledSidebarTrigger session={session} />
-          <main className="flex-1 p-4 bg-gray-100 dark:bg-slate-800 overflow-y-auto">
+          <main className="h-full p-4 bg-gray-100 dark:bg-slate-800">
             {children}
           </main>
           <Footer />
