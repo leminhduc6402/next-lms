@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/sidebar";
 import { usePathname } from "next/navigation";
 
-// Menu items.
+// Menu items
 const items = [
   {
     title: "Dashboard",
@@ -22,12 +22,12 @@ const items = [
   },
   {
     title: "Courses",
-    url: "/dashboard/course",
+    url: "/dashboard/courses",
     icon: LibraryBig,
   },
   {
     title: "Users",
-    url: "/dashboard/user",
+    url: "/dashboard/users",
     icon: Users,
   },
 ];

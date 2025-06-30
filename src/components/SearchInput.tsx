@@ -4,14 +4,12 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { useDebounce } from "@/lib/hooks/useDebounce";
 
-interface SearchInputProps
-  extends Omit<
-    React.InputHTMLAttributes<HTMLInputElement>,
-    "value" | "onChange"
-  > {
+interface SearchInputProps {
+  placeholder: string;
   value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (value: string) => void;
   delay?: number;
+  className: string;
 }
 
 const SearchInput = ({
@@ -26,15 +24,11 @@ const SearchInput = ({
   const debouncedValue = useDebounce(searchTerm, delay);
 
   useEffect(() => {
-    if (value !== searchTerm) setSearchTerm(value);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    setSearchTerm(value);
   }, [value]);
 
   useEffect(() => {
-    const syntheticEvent = {
-      target: { value: debouncedValue },
-    } as unknown as React.ChangeEvent<HTMLInputElement>;
-    onChange(syntheticEvent);
+    onChange(debouncedValue);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedValue]);
 

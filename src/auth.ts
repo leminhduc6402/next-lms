@@ -26,6 +26,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             password: credentials?.password,
           },
         });
+        
         if (res.statusCode === 201) {
           return {
             _id: res.data?.user?._id,
@@ -59,9 +60,5 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       (session.user as IUser) = token.user;
       return session;
     },
-    // authorized: async ({ auth }) => {
-    //   console.log("Auth callback running with auth:", auth);
-    //   return !!auth;
-    // },
   },
 });

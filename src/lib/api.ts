@@ -24,7 +24,7 @@ export const sendRequest = async <T>(props: IRequest): Promise<T> => {
 
   if (body) options.body = JSON.stringify(body);
   if (useCredentials) options.credentials = "include";
-
+  console.log(">>>", url);
   try {
     const res = await fetch(url, options);
     const json = await res.json();
