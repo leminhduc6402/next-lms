@@ -2,7 +2,7 @@ import AppBreadcrumb from "@/components/AppBreadcrumb";
 import React from "react";
 const breadcrumbItems = [
   { label: "Dashboard", href: "/dashboard" },
-  { label: "Course", href: "/dashboard/course" },
+  { label: "Course", href: "/dashboard/courses" },
 ];
 
 const ManageCourse = () => {

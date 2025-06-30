@@ -2,16 +2,14 @@
 
 import {
   ColumnDef,
-  ColumnFiltersState,
   flexRender,
   getCoreRowModel,
-  getFilteredRowModel,
   getPaginationRowModel,
-  getSortedRowModel,
-  SortingState,
+  PaginationState,
   useReactTable,
 } from "@tanstack/react-table";
 
+import { DataTablePagination } from "@/components/DataTablePagination";
 import {
   Table,
   TableBody,
@@ -20,62 +18,65 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
-import Header from "@/components/Header";
-import SearchInput from "@/components/SearchInput";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  meta: {
+    total: number;
+    current: number;
+    pageSize: number;
+    pages: number;
+  };
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  meta,
 }: DataTableProps<TData, TValue>) {
-  const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  // const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
+    pageIndex: meta.current - 1,
+    pageSize: meta.pageSize,
+  });
 
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    //sort
-    onSortingChange: setSorting,
-    getSortedRowModel: getSortedRowModel(),
 
     //filter
-    onColumnFiltersChange: setColumnFilters,
-    getFilteredRowModel: getFilteredRowModel(),
+    // onColumnFiltersChange: setColumnFilters,
+    // getFilteredRowModel: getFilteredRowModel(),
     state: {
-      sorting,
-      columnFilters,
+      // columnFilters,
+      pagination: { pageIndex, pageSize },
     },
-    initialState: {
-      pagination: {
-        pageSize: 10,
-      },
+    manualPagination: true,
+    pageCount: meta.pages,
+    onPaginationChange: (updater) => {
+      const next =
+        typeof updater === "function"
+          ? updater({ pageIndex, pageSize })
+          : updater;
+      setPagination(next);
+
+      const params = new URLSearchParams(searchParams);
+      params.set("page", String(next.pageIndex + 1));
+      params.set("pageSize", String(next.pageSize));
+      router.push(`${pathname}?${params.toString()}`);
     },
   });
 
   return (
     <div>
-      <Header
-        title="User Management"
-        rightSlot={
-          <SearchInput
-            placeholder="Search by name"
-            delay={500}
-            value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-            onChange={(event) =>
-              table.getColumn("name")?.setFilterValue(event.target.value)
-            }
-            className="max-w-sm"
-          />
-        }
-      />
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -126,23 +127,8 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          Previous
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          Next
-        </Button>
+      <div>
+        <DataTablePagination table={table} />
       </div>
     </div>
   );
