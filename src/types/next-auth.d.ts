@@ -31,7 +31,7 @@ declare module "next-auth" {
     user: IUser;
     access_token: string;
     refresh_token: string;
-    access_expire: number;
+    access_expire: string;
     error: string;
   }
 }
