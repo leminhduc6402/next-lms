@@ -26,7 +26,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             password: credentials?.password,
           },
         });
-        
+        const FIFTEEN_MINUTES_IN_MS = 15 * 60 * 1000;
+        const expiresAt = Date.now() + FIFTEEN_MINUTES_IN_MS;
         if (res.statusCode === 201) {
           return {
             _id: res.data?.user?._id,
@@ -35,6 +36,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             image: res.data?.user?.image || null,
             role: res.data?.user?.role,
             access_token: res.data?.access_token,
+            expires_at: expiresAt,
           };
         } else if (res.statusCode === 401) {
           throw new InvalidEmailPasswordError();
@@ -53,12 +55,29 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     jwt({ token, user }) {
       if (user) {
         token.user = user as IUser;
+        const userExpiresAt = (user as any).expires_at;
+        if (userExpiresAt) {
+          token.exp = Math.floor(userExpiresAt / 1000);
+        } else {
+          token.exp = Math.floor(Date.now() / 1000) + 15 * 60;
+        }
       }
       return token;
     },
     session({ session, token }) {
       (session.user as IUser) = token.user;
+      if (token.exp) {
+        session.access_expire = new Date(token.exp * 1000).toISOString();
+      } else {
+        session.access_expire = new Date(
+          Date.now() + 15 * 60 * 1000
+        ).toISOString();
+      }
       return session;
     },
+  },
+  session: {
+    strategy: "jwt",
+    maxAge: 15 * 60,
   },
 });

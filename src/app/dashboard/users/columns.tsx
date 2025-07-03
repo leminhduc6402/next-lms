@@ -1,22 +1,16 @@
 "use client";
 import { ColumnDef } from "@tanstack/react-table";
-import { CircleCheck, CircleX, MoreHorizontal } from "lucide-react";
+import { CircleCheck, CircleX } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import DataTableRowActions from "@/components/DataTableRowActions";
 
 export type User = {
   id: string;
-  name: number;
+  name: string;
   email: string;
   role: "USER" | "ADMIN";
   isActive: boolean;
-  accountType: string;
+  accountType: "LOCAL" | "GOOGLE" | "GITHUB";
 };
 
 export const columns: ColumnDef<User>[] = [
@@ -56,22 +50,9 @@ export const columns: ColumnDef<User>[] = [
   },
   {
     id: "actions",
-    cell: () => {
-      // const user = row.original;
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem className="text-blue-500">Edit</DropdownMenuItem>
-            <DropdownMenuItem className="text-red-500">Delete</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
+    header: () => <div className="text-center">Actions</div>,
+    cell: ({ row }) => {
+      return <DataTableRowActions row={row} />;
     },
   },
 ];
