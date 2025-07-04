@@ -25,7 +25,7 @@ import {
   FormMessage,
 } from "./ui/form";
 import { Input } from "./ui/input";
-import { sendRequest } from "@/lib/api";
+import { sendRequest } from "@/lib/api/api";
 import { toast } from "sonner";
 
 export interface ModalRenewPasswordProps {

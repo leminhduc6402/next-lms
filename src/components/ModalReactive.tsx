@@ -16,7 +16,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { sendRequest } from "@/lib/api";
+import { sendRequest } from "@/lib/api/api";
 import { VerifyBody, VerifyBodyType } from "@/lib/schemaValidation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";

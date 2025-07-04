@@ -1,9 +1,10 @@
 import { auth } from "@/auth";
 import AppBreadcrumb from "@/components/AppBreadcrumb";
-import { sendRequest } from "@/lib/api";
-import { columns, User } from "./columns";
+import Header from "@/components/Header";
+import UserTableToolbar from "@/components/users/UserTableToolbar";
+import { sendRequest } from "@/lib/api/api";
 import { DataTable } from "../../../components/DataTable";
-import HeaderWithSearch from "@/components/HeaderWithSearch";
+import { columns, User } from "./columns";
 
 const breadcrumbItems = [
   { label: "Dashboard", href: "/dashboard" },
@@ -34,7 +35,6 @@ async function getUsers({
     headers: { Authorization: `Bearer ${session?.user?.access_token}` },
     nextOption: { next: { tags: ["list-users"] } },
   });
-
   return (
     res.data ?? {
       results: [],
@@ -56,11 +56,8 @@ export default async function ManageUserPage({
     <div className="h-full flex flex-col">
       <AppBreadcrumb items={breadcrumbItems} />
       <div className="flex-1 rounded-lg bg-white shadow p-4 dark:bg-slate-600">
-        <HeaderWithSearch
-          title="User Management"
-          searchKey="name"
-          placeholder="Search by name"
-        />
+        <Header title="User Management" />
+        <UserTableToolbar />
         <DataTable columns={columns} data={results || []} meta={meta || null} />
       </div>
     </div>

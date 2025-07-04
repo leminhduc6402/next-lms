@@ -9,7 +9,7 @@ interface SearchInputProps {
   value: string;
   onChange: (value: string) => void;
   delay?: number;
-  className: string;
+  className?: string;
 }
 
 const SearchInput = ({

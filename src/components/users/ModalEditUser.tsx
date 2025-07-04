@@ -2,16 +2,16 @@ import { User } from "@/app/dashboard/users/columns";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { EditUserBody, EditUserBodyType } from "@/lib/validation/user";
+import { handleUpdateUserAction } from "@/lib/api/users";
+import { EditUserBody, EditUserBodyType } from "@/lib/validation/users";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import {
@@ -21,16 +21,15 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "./ui/form";
+} from "../ui/form";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "./ui/select";
-import { useEffect } from "react";
-import { Switch } from "./ui/switch";
+} from "../ui/select";
+import { Switch } from "../ui/switch";
 export interface ModalEditUserProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -47,7 +46,6 @@ export default function EditUserModal({
     resolver: zodResolver(EditUserBody),
     defaultValues: user,
   });
-
   useEffect(() => {
     if (open) {
       form.reset(user);
@@ -55,24 +53,18 @@ export default function EditUserModal({
   }, [user, open, form]);
 
   const onSubmit = async (data: EditUserBodyType) => {
-    // try {
-    //   const res = await fetch(
-    //     `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/${user._id}`,
-    //     {
-    //       method: "PUT",
-    //       headers: { "Content-Type": "application/json" },
-    //       body: JSON.stringify(data),
-    //     }
-    //   );
-    //   if (!res.ok) throw new Error("Update failed");
-    //   const updated = (await res.json()).data as User;
-    //   toast.success("User updated!");
-    //   onSaved?.(updated);
-    //   onOpenChange(false);
-    // } catch (err) {
-    //   console.error(err);
-    //   toast.error("Failed to update user");
-    // }
+    try {
+      const res = await handleUpdateUserAction(data, user._id);
+      if (res?.data && res.statusCode === 200) {
+        toast.success("Update users successfully");
+        onOpenChange(false);
+      } else {
+        toast.error("Failed to update user");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to update user");
+    }
   };
 
   return (
@@ -80,6 +72,7 @@ export default function EditUserModal({
       <DialogContent className="sm:max-w-[480px]">
         <DialogHeader>
           <DialogTitle>Edit User</DialogTitle>
+          <DialogDescription></DialogDescription>
         </DialogHeader>
 
         <Form {...form}>
@@ -113,61 +106,62 @@ export default function EditUserModal({
                 </FormItem>
               )}
             />
+            <div className="flex gap-x-4">
+              {/* Role */}
+              <FormField
+                control={form.control}
+                name="role"
+                render={({ field }) => (
+                  <FormItem className="w-1/2">
+                    <FormLabel>Role</FormLabel>
+                    <Select
+                      value={field.value}
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="w-full">
+                          <SelectValue />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="USER">USER</SelectItem>
+                        <SelectItem value="ADMIN">ADMIN</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            {/* Role */}
-            <FormField
-              control={form.control}
-              name="role"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Role</FormLabel>
-                  <Select
-                    value={field.value}
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="USER">USER</SelectItem>
-                      <SelectItem value="ADMIN">ADMIN</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Account Type */}
-            <FormField
-              control={form.control}
-              name="accountType"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Account Type</FormLabel>
-                  <Select
-                    value={field.value}
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="LOCAL">LOCAL</SelectItem>
-                      <SelectItem value="GOOGLE">GOOGLE</SelectItem>
-                      <SelectItem value="GITHUB">GITHUB</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+              {/* Account Type */}
+              <FormField
+                control={form.control}
+                name="accountType"
+                render={({ field }) => (
+                  <FormItem className="w-1/2">
+                    <FormLabel>Account Type</FormLabel>
+                    <Select
+                      value={field.value}
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="w-full">
+                          <SelectValue />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="LOCAL">LOCAL</SelectItem>
+                        <SelectItem value="GOOGLE">GOOGLE</SelectItem>
+                        <SelectItem value="GITHUB">GITHUB</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
 
             {/* IsActive */}
             <FormField

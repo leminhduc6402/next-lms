@@ -1,6 +1,6 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import { sendRequest } from "./lib/api";
+import { sendRequest } from "./lib/api/api";
 import {
   AccountNotVerifiedError,
   InvalidEmailPasswordError,

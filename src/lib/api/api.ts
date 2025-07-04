@@ -35,6 +35,7 @@ export const sendRequest = async <T>(props: IRequest): Promise<T> => {
       error: json?.error ?? "",
     } as T;
   } catch (err) {
+    console.log(err);
     throw new Error("Network error");
   }
 };

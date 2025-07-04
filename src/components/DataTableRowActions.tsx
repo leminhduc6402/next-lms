@@ -1,20 +1,48 @@
 import { Row } from "@tanstack/react-table";
 import { PencilLine, Trash2 } from "lucide-react";
 import { useState } from "react";
-import ModalEditUser from "./ModalEditUser";
+import ModalEditUser from "./users/ModalEditUser";
 import { Button } from "./ui/button";
 import { User } from "@/app/dashboard/users/columns";
+import { ModalConfirm } from "./ModalConfirm";
+import { toast } from "sonner";
+import { handleDeleteUserAction } from "@/lib/api/users";
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
 }
 
-function DataTableRowActions<TData extends User>({ row }: DataTableRowActionsProps<TData>) {
+function DataTableRowActions<TData extends User>({
+  row,
+}: DataTableRowActionsProps<TData>) {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-  // const user = row.original;
+  const handleDelete = async () => {
+    try {
+      const res = await handleDeleteUserAction(row.original._id);
+
+      if (res.statusCode === 200) {
+        toast.success("User deleted successfully");
+      } else {
+        toast.error("Delete failed");
+      }
+    } catch (err) {
+      console.log(err);
+      toast.error("Delete failed");
+    } finally {
+      setIsDeleteOpen(false);
+    }
+  };
   return (
     <div>
+      <ModalConfirm
+        open={isDeleteOpen}
+        onCancel={() => setIsDeleteOpen(false)}
+        onConfirm={handleDelete}
+        title="Delete user?"
+        description="Are you sure you want to delete this user? This action cannot be undone."
+        confirmText="Delete"
+      />
       <ModalEditUser
         open={isEditOpen}
         onOpenChange={setIsEditOpen}

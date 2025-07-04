@@ -15,7 +15,7 @@ import {
   FormLabel,
   FormMessage,
 } from "./ui/form";
-import { sendRequest } from "@/lib/api";
+import { sendRequest } from "@/lib/api/api";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
