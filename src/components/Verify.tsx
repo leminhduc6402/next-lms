@@ -13,7 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { VerifyBody, VerifyBodyType } from "@/lib/schemaValidation";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { sendRequest } from "@/lib/api";
+import { sendRequest } from "@/lib/api/api";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
@@ -59,7 +59,6 @@ const Verify = ({ id }: { id: string }) => {
       </div>
       <Form {...form}>
         <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
-
           <div className="space-y-2">
             <FormField
               control={form.control}

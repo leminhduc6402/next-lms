@@ -6,6 +6,7 @@ import DataTableRowActions from "@/components/DataTableRowActions";
 
 export type User = {
   id: string;
+  _id: string;
   name: string;
   email: string;
   role: "USER" | "ADMIN";
@@ -14,6 +15,19 @@ export type User = {
 };
 
 export const columns: ColumnDef<User>[] = [
+  {
+    id: "stt",
+    header: () => <div className="text-center">#</div>,
+    cell: ({ row, table }) => {
+      const index =
+        table.getState().pagination.pageIndex *
+          table.getState().pagination.pageSize +
+        row.index +
+        1;
+      return <div className="text-center">{index}</div>;
+    },
+    size: 50,
+  },
   {
     accessorKey: "name",
     header: "Name",
