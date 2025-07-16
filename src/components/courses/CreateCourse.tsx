@@ -1,11 +1,13 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { handleCreateCourseAction } from "@/lib/api/courses";
 import { uploadThumbnailAPI } from "@/lib/api/upload";
 import {
   CreateCourseBody,
   CreateCourseBodyType,
 } from "@/lib/validation/courses";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 import { FixedFormMessage } from "../FixedFormMessage";
@@ -25,6 +27,7 @@ export interface ModalCreateCourseProps {
 }
 
 export default function CreateCourse() {
+  const router = useRouter();
   const form = useForm<CreateCourseBodyType>({
     resolver: zodResolver(CreateCourseBody),
     defaultValues: {
@@ -54,19 +57,20 @@ export default function CreateCourse() {
     }
   };
   const onSubmit = async (data: CreateCourseBodyType) => {
-    console.log(">>> check: ", data);
-    // try {
-    //   const res = await handleCreateUserAction(data);
-    //   if (res?.data && res.statusCode === 201) {
-    //     toast.success("Create users successfully");
-    //     onOpenChange(false);
-    //   } else {
-    //     toast.error("Failed to create user");
-    //   }
-    // } catch (err) {
-    //   console.error(err);
-    //   toast.error("Failed to create user");
-    // }
+    // console.log(">>> check: ", data);
+    try {
+      const res = await handleCreateCourseAction(data);
+      if (res?.data && res.statusCode === 201) {
+        toast.success("Create course successfully");
+        router.push(`/dashboard/courses/${res.data._id}`);
+      } else {
+        console.log(res)
+        toast.error("Failed to create course");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to create course");
+    }
   };
 
   return (
