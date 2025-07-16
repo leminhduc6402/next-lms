@@ -2,7 +2,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { CircleCheck, CircleX } from "lucide-react";
 
-import DataTableRowActions from "@/components/DataTableRowActions";
+import DataTableRowActions from "@/components/users/DataTableRowActions";
 
 export type User = {
   id: string;
@@ -12,6 +12,7 @@ export type User = {
   role: "USER" | "ADMIN";
   isActive: boolean;
   accountType: "LOCAL" | "GOOGLE" | "GITHUB";
+  image: string;
 };
 
 export const columns: ColumnDef<User>[] = [

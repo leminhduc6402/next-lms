@@ -45,7 +45,7 @@ const Navbar = ({
   session,
 }: NavbarProps) => {
   return (
-    <div className="w-full sticky shadow-md dark:bg-slate-700 z-50">
+    <div className="w-full sticky shadow-md dark:bg-slate-700">
       <div className="flex justify-between items-center px-4 py-3 bg-white dark:bg-slate-700">
         {isEnabledSidebarTrigger && <SidebarTrigger />}
         {!isDashboard && (

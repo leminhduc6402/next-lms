@@ -11,7 +11,6 @@ export const sendRequest = async <T>(props: IRequest): Promise<T> => {
   } = props;
 
   let { url } = props;
-
   if (queryParams && Object.keys(queryParams).length > 0) {
     url += `?${queryString.stringify(queryParams)}`;
   }
@@ -25,6 +24,7 @@ export const sendRequest = async <T>(props: IRequest): Promise<T> => {
   if (body) options.body = JSON.stringify(body);
   if (useCredentials) options.credentials = "include";
   try {
+    // console.log(">>> check:", url);
     const res = await fetch(url, options);
     const json = await res.json();
     if (res.ok) return json as T;
