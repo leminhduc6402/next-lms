@@ -1,4 +1,4 @@
-import { User } from "@/app/dashboard/users/columns";
+import { User } from "@/app/dashboard/users/column";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,

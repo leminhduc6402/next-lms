@@ -1,10 +1,10 @@
 import { Row } from "@tanstack/react-table";
 import { PencilLine, Trash2 } from "lucide-react";
 import { useState } from "react";
-import ModalEditUser from "./users/ModalEditUser";
-import { Button } from "./ui/button";
-import { User } from "@/app/dashboard/users/columns";
-import { ModalConfirm } from "./ModalConfirm";
+import ModalEditUser from "./ModalEditUser";
+import { Button } from "../ui/button";
+import { User } from "@/app/dashboard/users/column";
+import { ModalConfirm } from "../ModalConfirm";
 import { toast } from "sonner";
 import { handleDeleteUserAction } from "@/lib/api/users";
 
@@ -39,8 +39,8 @@ function DataTableRowActions<TData extends User>({
         open={isDeleteOpen}
         onCancel={() => setIsDeleteOpen(false)}
         onConfirm={handleDelete}
-        title="Delete user?"
-        description="Are you sure you want to delete this user? This action cannot be undone."
+        title="Delete course?"
+        description="Are you sure you want to delete this course? This action cannot be undone."
         confirmText="Delete"
       />
       <ModalEditUser

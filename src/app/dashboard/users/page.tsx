@@ -4,7 +4,7 @@ import Header from "@/components/Header";
 import UserTableToolbar from "@/components/users/UserTableToolbar";
 import { sendRequest } from "@/lib/api/api";
 import { DataTable } from "../../../components/DataTable";
-import { columns, User } from "./columns";
+import { columns, User } from "./column";
 
 const breadcrumbItems = [
   { label: "Dashboard", href: "/dashboard" },
